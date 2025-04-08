@@ -1,0 +1,22 @@
+mode: set
+github.com/KMrsR/task-manager/internal/storage/storage.go:24.40,26.2 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:29.59,34.12 4 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:34.12,36.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:38.2,39.31 2 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:39.31,41.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:43.2,43.19 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:48.57,52.19 3 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:52.19,54.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:55.2,56.12 2 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:61.70,66.9 4 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:66.9,68.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:70.2,70.19 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:75.78,79.26 3 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:79.26,81.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:83.2,84.9 2 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:84.9,86.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:87.2,88.12 2 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:93.53,98.9 4 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:98.9,100.3 1 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:102.2,103.12 2 1
+github.com/KMrsR/task-manager/internal/storage/storage.go:107.33,111.2 3 1
