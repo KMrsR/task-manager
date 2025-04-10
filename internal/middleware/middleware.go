@@ -12,6 +12,7 @@ func RequireJSON(next http.Handler) http.Handler {
 		contentType := r.Header.Get("Content-Type")
 		if !strings.Contains(contentType, "application/json") {
 			handlers.responseWithError(w, "Content-Type must be application/json", http.StatusUnsupportedMediaType)
+			handlers
 		}
 
 		next.ServeHTTP(w, r)
