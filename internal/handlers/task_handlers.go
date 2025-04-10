@@ -22,7 +22,7 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
-		responseWithError(w, "invalid request body", http.StatusBadRequest)
+		httputils.responseWithError(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
 	if err := h.storage.AddTask(task); err != nil {
@@ -105,16 +105,4 @@ func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 	}
 	// приуспешном удалении
 	w.WriteHeader(http.StatusNoContent)
-}
-
-// функция дл стандартных ответов
-func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(payload)
-}
-
-// функция для ответа с ошибкой
-func responseWithError(w http.ResponseWriter, msg string, code int) {
-	respondWithJSON(w, code, map[string]string{"error": msg})
 }
