@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-// функция дл стандартных ответов
-func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+// функция для стандартных ответов
+func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
 	json.NewEncoder(w).Encode(payload)
 }
 
 // функция для ответа с ошибкой
-func responseWithError(w http.ResponseWriter, msg string, code int) {
-	respondWithJSON(w, code, map[string]string{"error": msg})
+func ResponseWithError(w http.ResponseWriter, msg string, code int) {
+	RespondWithJSON(w, code, map[string]string{"error": msg})
 }
