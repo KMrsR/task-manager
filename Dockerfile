@@ -1,21 +1,21 @@
 # 1. Этап сборки (builder)
-FROM golang:1.21-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 # 2. Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
 # 3. Копируем файлы зависимостей
-COPY go.mod go.sum ./
+#COPY ./go.mod ./go.sum 
 
 # 4. Загружаем зависимости
-RUN go mod download
+#RUN go mod download
 
 # 5. Копируем весь проект
 COPY . .
 
 # 6. Собираем бинарный файл приложения
-RUN go build -o task-manager ./cmd/server
-
+#RUN go build -o task-manager ./cmd/server
+RUN go mod tidy && go build -o task-manager ./cmd/server
 # ----------------------------
 # 7. Этап запуска (финальный образ)
 FROM alpine:latest
