@@ -25,7 +25,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: taskuser
-      DB_PASSWORD: taskpass
+      DB_PASSWORD: taskuser
       DB_NAME: taskdb
     depends_on:
       db:

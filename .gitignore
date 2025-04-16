@@ -2,3 +2,5 @@
 *.log
 *.out
 .env
+*.db
+/dbdata/

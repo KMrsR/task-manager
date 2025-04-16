@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"context"
 	"fmt"
 	"sync"
 
@@ -8,12 +9,12 @@ import (
 )
 
 type TaskStorage interface {
-	GetTasks() ([]models.Task, error)
-	GetTaskByID(id string) (*models.Task, error)
-	AddTask(task models.Task) error
-	UpdateTask(id string, updatedTask models.Task) error
-	DeleteTask(id string) error
-	Clear()
+	AddTask(ctx context.Context, task models.Task) error
+	GetTasks(ctx context.Context) ([]models.Task, error)
+	GetTaskByID(ctx context.Context, id string) (*models.Task, error)
+	UpdateTask(ctx context.Context, id string, updatedTask models.Task) error
+	DeleteTask(ctx context.Context, id string) error
+	Close() error
 }
 
 type MemoryStorage struct {
@@ -108,4 +109,9 @@ func (s *MemoryStorage) Clear() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.tasks = make(map[string]models.Task)
+}
+
+func (m *MemoryStorage) Close() error {
+	// Ничего не нужно делать для in-memory хранилища
+	return nil
 }

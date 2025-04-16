@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS tasks (
+    id VARCHAR(36) PRIMARY KEY,
+    title TEXT NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    deadline TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);

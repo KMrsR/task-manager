@@ -26,7 +26,7 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		httputils.ResponseWithError(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
-	if err := h.storage.AddTask(task); err != nil {
+	if err := h.storage.AddTask(r.Context(), task); err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -41,7 +41,7 @@ func (h *TaskHandler) GetTaskByID(w http.ResponseWriter, r *http.Request) {
 		httputils.ResponseWithError(w, "id required", http.StatusBadRequest)
 		return
 	}
-	task, err := h.storage.GetTaskByID(id)
+	task, err := h.storage.GetTaskByID(r.Context(), id)
 	if err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusNotFound)
 		return
@@ -56,7 +56,7 @@ func (h *TaskHandler) GetTasks(w http.ResponseWriter, r *http.Request) {
 		httputils.ResponseWithError(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	tasks, err := h.storage.GetTasks()
+	tasks, err := h.storage.GetTasks(r.Context())
 	if err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusNotFound)
 		return
@@ -81,7 +81,7 @@ func (h *TaskHandler) UpdateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := h.storage.UpdateTask(id, updatedTask)
+	err := h.storage.UpdateTask(r.Context(), id, updatedTask)
 	if err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusNotFound)
 		return
@@ -98,7 +98,7 @@ func (h *TaskHandler) DeleteTask(w http.ResponseWriter, r *http.Request) {
 		httputils.ResponseWithError(w, "id required", http.StatusBadRequest)
 		return
 	}
-	err := h.storage.DeleteTask(id)
+	err := h.storage.DeleteTask(r.Context(), id)
 	if err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusNotFound)
 		return

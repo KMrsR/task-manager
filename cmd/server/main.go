@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/KMrsR/task-manager/internal/handlers"
 	"github.com/KMrsR/task-manager/internal/middleware"
@@ -11,8 +14,28 @@ import (
 )
 
 func main() {
-	store := storage.NewMemoryStorage()
-	handler := handlers.NewTaskHandler(store)
+	ctx := context.Background()
+
+	// Чтение конфига из env
+	connStr := fmt.Sprintf(
+		"postgres://%s:%s@%s:%s/%s?sslmode=disable",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
+	)
+
+	// Инициализация хранилища
+	storage, err := storage.NewPostgresStorage(ctx, connStr)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer storage.Close()
+
+	// store := storage.NewMemoryStorage()
+	handler := handlers.NewTaskHandler(storage)
 
 	router := mux.NewRouter()
 	router.Use(middleware.LoggingMiddleware)
