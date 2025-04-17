@@ -38,18 +38,20 @@ func (p *PostgresStorage) AddTask(ctx context.Context, task models.Task) error {
 // Возвращает все задачи
 func (p *PostgresStorage) GetTasks(ctx context.Context) ([]models.Task, error) {
 	var tasks []models.Task
-	sqlStr := `SELECT * FROM tasks`
+	sqlStr := `SELECT id,title,status,deadline FROM tasks`
 	rows, err := p.conn.Query(ctx, sqlStr)
 	if err != nil {
-		return nil, fmt.Errorf("failed add tasks: %w", err)
+		return nil, fmt.Errorf("failed get tasks: %w", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var task models.Task
-		err := rows.Scan(&task.ID, &task.Title, &task.Status, &task.Deadline)
+		var temp time.Time
+		err := rows.Scan(&task.ID, &task.Title, &task.Status, &temp)
+		task.Deadline = temp.Format(time.RFC1123)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to scan rows: %w", err)
 		}
 		tasks = append(tasks, task)
 	}
@@ -66,15 +68,15 @@ func (p *PostgresStorage) GetTaskByID(ctx context.Context, id string) (*models.T
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, fmt.Errorf("task not found")
 		}
-		return nil, fmt.Errorf("failed to add task: %w", err)
+		return nil, fmt.Errorf("failed to get task: %w", err)
 	}
 	return &task, nil
 }
 
 // Обновляем задачу по ID
 func (p *PostgresStorage) UpdateTask(ctx context.Context, id string, updatedTask models.Task) error {
-	sqlStr := `UPDATE tasks SET id = $1; title=$2; status=$3; deadline=$4;`
-	_, err := p.conn.Exec(ctx, sqlStr, updatedTask.ID, updatedTask.Title, updatedTask.Status, updatedTask.Deadline)
+	sqlStr := `UPDATE tasks SET  title=$1, status=$2, deadline=$3 WHERE id=$4`
+	_, err := p.conn.Exec(ctx, sqlStr, updatedTask.Title, updatedTask.Status, updatedTask.Deadline, updatedTask.ID)
 	if err != nil {
 		return fmt.Errorf("failed to update: %w", err)
 	}

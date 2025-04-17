@@ -26,6 +26,8 @@ func (h *TaskHandler) CreateTask(w http.ResponseWriter, r *http.Request) {
 		httputils.ResponseWithError(w, "invalid request body", http.StatusBadRequest)
 		return
 	}
+	defer r.Body.Close()
+
 	if err := h.storage.AddTask(r.Context(), task); err != nil {
 		httputils.ResponseWithError(w, err.Error(), http.StatusInternalServerError)
 		return

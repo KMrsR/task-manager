@@ -26,11 +26,21 @@ WORKDIR /app
 # 9. Копируем бинарник из этапа builder
 COPY --from=builder /app/task-manager .
 
-# 10. Копируем миграции (если есть)
+# 10. Копируем миграции (если есть) и скрипты
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/scripts ./scripts
+
+# Устанавливаем клиент PostgreSQL
+RUN apk add --no-cache postgresql-client
+
+# Делаем скрипт исполняемым
+RUN chmod +x ./scripts/migrate.sh
 
 # 11. Открываем порт для доступа извне
 EXPOSE 8080
+
+# Запускаем миграции перед стартом приложения
+CMD ["./scripts/migrate.sh"]
 
 # 12. Команда запуска приложения
 CMD ["./task-manager"]
